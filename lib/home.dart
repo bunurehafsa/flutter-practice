@@ -2,7 +2,8 @@ import 'package:flutter/material.dart';
 //mport 'package:test_2/common/navigation.dart';
 
 class HomeScreen extends StatefulWidget {
-  const HomeScreen({super.key});
+  final String? username;
+  const HomeScreen({super.key, required this.username});
 
   @override
   State<HomeScreen> createState() => _HomeScreenState();
@@ -19,8 +20,11 @@ class _HomeScreenState extends State<HomeScreen> {
         backgroundColor: Colors.blueGrey.shade300,
         
         ),
+        body:Center(
+          child:Text(widget.username??'',
+        style: TextStyle(fontSize: 30),)
         
 
-    );
+    ));
   }
 }

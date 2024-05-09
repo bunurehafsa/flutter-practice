@@ -8,6 +8,7 @@ import 'package:test_2/search.dart';
 import 'package:test_2/setting.dart';
 //import 'package:test_2/profile.dart';
 import 'package:test_2/signup.dart';
+import 'package:test_2/simple_calculation.dart';
 
 void main() {
   runApp(const MyApp());
@@ -38,6 +39,7 @@ class MyApp extends StatelessWidget {
           email: '',) ,
         '/search':(BuildContext context) => const SearchScreen() ,
         '/setting':(BuildContext context) => const SettingScreen() ,
+        '/simple_calculator':(BuildContext context) => const CalculatorScreen() ,
         '/images':(BuildContext context) => const ImagesAndButton() ,
 
 

@@ -87,6 +87,17 @@ class _SignupScreenState extends State<SignupScreen> {
                       height: 30,
                     ),
                     ElevatedButton(
+                      style: ButtonStyle(
+                        shape: MaterialStateProperty.all(RoundedRectangleBorder(
+                          borderRadius: BorderRadius.all(Radius.circular(5))
+                        )),
+                        foregroundColor: MaterialStateProperty.all(Colors.white),
+                        backgroundColor: MaterialStateProperty.all(Colors.deepPurpleAccent),
+                        textStyle: MaterialStateProperty.all(
+                          TextStyle(fontSize: 30,fontWeight: FontWeight.bold)
+                        ),
+                        padding: MaterialStateProperty.all(EdgeInsets.symmetric(horizontal: 30,vertical:15))
+                       ),
                       onPressed: () {
                         //username
                         //email

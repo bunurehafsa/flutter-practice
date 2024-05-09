@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:test_2/main_screen.dart';
 import 'package:test_2/signup.dart';
 
 class loginScreen extends StatefulWidget {
@@ -96,7 +97,13 @@ class _loginScreenState extends State<loginScreen> {
                       height: 40,
                     ),
                     ElevatedButton(
-                      onPressed: () {},
+                      onPressed: () {
+                        String username='BU CSE';
+                        String email='nurehafsa399@gmail.com';
+                        Navigator.of(context).push(MaterialPageRoute(
+                            builder: (context)=>
+                              MainScreen(username: username, email: email)));
+                      },
                       child:Text('Login'),
                       ),
                       SizedBox(
