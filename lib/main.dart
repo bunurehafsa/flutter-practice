@@ -9,6 +9,7 @@ import 'package:test_2/setting.dart';
 //import 'package:test_2/profile.dart';
 import 'package:test_2/signup.dart';
 import 'package:test_2/simple_calculation.dart';
+//import 'package:test_2/simple_calculation.dart';
 
 void main() {
   runApp(const MyApp());
@@ -29,7 +30,7 @@ class MyApp extends StatelessWidget {
         useMaterial3: true,
       ),
       //home: const loginScreen(),
-      initialRoute: '/signup',
+      initialRoute: '/simple_calculator',
       routes: {
         '/login':(BuildContext context) => const loginScreen() ,
         '/signup':(BuildContext context) => const SignupScreen() ,
