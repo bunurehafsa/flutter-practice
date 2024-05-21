@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:test_2/main_screen.dart';
+import 'package:flutter/widgets.dart';
+//import 'package:test_2/main_screen.dart';
 import 'package:test_2/signup.dart';
 
 class loginScreen extends StatefulWidget {
@@ -98,11 +99,23 @@ class _loginScreenState extends State<loginScreen> {
                     ),
                     ElevatedButton(
                       onPressed: () {
-                        String username='BU CSE';
-                        String email='nurehafsa399@gmail.com';
-                        Navigator.of(context).push(MaterialPageRoute(
-                            builder: (context)=>
-                              MainScreen(username: username, email: email)));
+                        showDialog(
+                          context: context, 
+                          builder: (context){
+                            return AlertDialog(
+                             title:Text('Warning!'),
+                             icon:Icon(Icons.warning),
+                             content:Container(
+                               child: Text('Invalid Credentials'),)
+                            );
+
+
+                        },);
+                        // String username='BU CSE';
+                        // String email='nurehafsa399@gmail.com';
+                        // Navigator.of(context).push(MaterialPageRoute(
+                        //     builder: (context)=>
+                        //       MainScreen(username: username, email: email)));
                       },
                       child:Text('Login'),
                       ),
