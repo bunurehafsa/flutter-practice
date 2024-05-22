@@ -3,6 +3,7 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:test_2/models/User.dart';
 //mport 'package:test_2/common/navigation.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -16,27 +17,41 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   bool isLoading=false;
   String name='';
-  List<dynamic>users=[];
+  late Future<List<User>>futureUsers;
+  List<User>users=[];
+  @override
+  void initState(){
+    super.initState();
+    futureUsers = getUsersFromDB();
+  }
 
   Future<String> getNameFromDtabase () async{
     await Future.delayed(Duration(seconds: 5));
     return 'BU CSE';
   }
 
- Future<void>getUsersFromDB () async{
+ Future<List<User>>getUsersFromDB () async{
   try{
   Uri uri=Uri.parse('https://jsonplaceholder.typicode.com/users');
   http.Response response= await http.get (uri);//post
   //print('status code ${response.statusCode}');
   List<dynamic> decoded =json.decode(response.body);
-  inspect(decoded);
-  setState(() {
-    users =decoded;
-    isLoading=false;
+  List<User>tempUsers=[];
+  for (var element in decoded) {
+      User tempUser =User.fromJson(element);
+      tempUsers.add(tempUser);
+    }
 
-  });
+  inspect(decoded);
+  return tempUsers;
+  // setState(() {
+  //   users =tempUsers;
+  //   isLoading=false;
+
+ // });
   } catch (e){
     print('getting user error:${e.toString()}');
+    return [];
   }
 
  }
@@ -79,18 +94,68 @@ class _HomeScreenState extends State<HomeScreen> {
                 strokeWidth: 5,
                 
               ),
-              ListView.builder(
-                shrinkWrap: true,
-                itemCount: 5,
-                itemBuilder: (context,index){
-                  return Text(users[index]['name']);
-                },
-              ),
+              // ListView.builder(
+              //   shrinkWrap: true,
+              //   itemCount: users.length,
+              //   itemBuilder: (context,index){
+              //     return Text(users[index].email);
+              //   },
+              // ),
 
-              Text(name)
-              ],
-            
-            
+              // Text(name)
+              FutureBuilder(
+                future: futureUsers, 
+                builder: (context,snapshot){
+                if(snapshot.connectionState==ConnectionState.waiting){
+                  return const Center(
+                    child:CircularProgressIndicator(),
+                  );
+                }
+                else if(snapshot.connectionState==ConnectionState.done){
+
+                
+                if(snapshot.hasData){
+                  List<User>tempUsers =snapshot.data!;
+                  return ListView.builder(
+                    shrinkWrap: true,
+                    itemCount: tempUsers.length,
+                   itemBuilder: (context,index){
+                    User user=tempUsers[index];
+                   return Container(
+                    margin: const EdgeInsets.symmetric(vertical: 10),
+                     padding: const EdgeInsets.symmetric(
+                      vertical: 10,horizontal: 20
+                     ),
+                     decoration: BoxDecoration(
+                       border:Border.all(
+                        color: Colors.purple,width: 1
+                       ),
+                       borderRadius: const BorderRadius.all(Radius.circular(20))),
+                     
+                      
+                      child: Column(
+                        children: [
+                          Text('User Id:${user.id}'),
+                          Text('Name:${user.username}'),
+                          Text('Email:${user.email.toLowerCase()}'),
+                          Text(
+                            'Address:Streer-${user.address.street}City-${user.
+                            address.city}Zip Code-${user.address.zipcode}'),
+                        ],),
+                     
+                   );
+                 },
+                  );
+                }
+                if(snapshot.hasError){  
+                  return Text(snapshot.error.toString());               
+                }
+                }
+                 return Text(snapshot.data!.length.toString());
+                
+              },
+              )
+              ],                        
                 ),
           ),
         ));
