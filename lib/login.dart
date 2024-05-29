@@ -1,7 +1,14 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:test_2/LoginUser.dart';
 //import 'package:test_2/main_screen.dart';
 import 'package:test_2/signup.dart';
+import 'package:http/http.dart'as http;
+import 'package:email_validator/email_validator.dart';
+//import 'dart:developer';
+import 'dart:convert';
+
 
 class loginScreen extends StatefulWidget {
   const loginScreen({super.key});
@@ -12,10 +19,47 @@ class loginScreen extends StatefulWidget {
 
 class _loginScreenState extends State<loginScreen> {
   late String userName = '';
-  late String email;
-  late String password;
+  late String email ='';
+  late String password='';
 
   late String userNameError = '';
+
+  Future<void> handleLoginPress() async{
+    if(!EmailValidator.validate(email)){
+      showDialog(
+        context: context, 
+        builder: (context){
+          return AlertDialog(
+            title:Text('Warning!!'),
+            icon:Icon(Icons.warning),
+            content:Container(
+               child:Text('Invalid Email!! Please check your email'),),
+          );
+        },);
+    }
+
+    print('sending login request...');
+    Uri uri=Uri.parse('https://task-management-backend-vhcq.onrender.com/api/v1/login');
+    var payload={
+      "email":email,
+      "password":password,
+    };
+    http.Response response=await http.post(uri,body:payload);
+    print("login status code:${response.statusCode}");
+    print("login response body:${response.body}");//string
+    dynamic decoded= json.decode(response.body);//map
+
+    LoginUser loginUser= LoginUser.fromJson(decoded['data']);
+    print(loginUser.email);
+    print(loginUser.firstname);
+    print(loginUser.lastname);
+
+    print('token:${decoded['token']}');
+
+  }
+    
+  // }
+  //await
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -40,44 +84,46 @@ class _loginScreenState extends State<loginScreen> {
         padding: const EdgeInsets.all(8.0),
         child: Column(
           children: [
-           // Text(
-             // 'Welcome',
-             // style: TextStyle(fontSize: 35),
-            //),
+            const Text(
+             'Welcome',
+              style: TextStyle(fontSize: 35),
+            ),
+            // TextFormField(
+            //     style: TextStyle(fontSize: 16),
+            //     onChanged: (value) {
+            //       print('user name: $value');
+            //       setState(() {
+            //         userName = value;
+            //         if (value.contains('@')) {
+            //           userNameError = 'Dont use @';
+            //         } else {
+            //           userNameError = '';
+            //         }
+            //       });
+            //     },
+            //     decoration: InputDecoration(
+            //         label: Text('User Name'),
+            //         icon: Icon(Icons.person),
+            //         hintText: 'Enter User Name',
+            //         hintStyle: TextStyle(color: Colors.grey),
+            //         errorText: userNameError.isEmpty ? null : userNameError)),
             TextFormField(
                 style: TextStyle(fontSize: 16),
+                keyboardType: TextInputType.emailAddress,
                 onChanged: (value) {
-                  print('user name: $value');
-                  setState(() {
-                    userName = value;
-                    if (value.contains('@')) {
-                      userNameError = 'Dont use @';
-                    } else {
-                      userNameError = '';
-                    }
+                  print('Email: $value');
+                 setState(() {
+                   email = value;
                   });
                 },
-                decoration: InputDecoration(
-                    label: Text('User Name'),
-                    icon: Icon(Icons.person),
-                    hintText: 'Enter User Name',
+                decoration: const InputDecoration(
+                   label: Text('Email'),
+                   icon: Icon(Icons.email),
+                    hintText: 'Enter Email',
                     hintStyle: TextStyle(color: Colors.grey),
-                    errorText: userNameError.isEmpty ? null : userNameError)),
-           // TextFormField(
-              //  style: TextStyle(fontSize: 16),
-               // keyboardType: TextInputType.emailAddress,
-               // onChanged: (value) {
-                //  print('Email: $value');
-                //  setState(() {
-                 //   email = value;
-                 // });
-               // },
-                //decoration: InputDecoration(
-                 //   label: Text('Email'),
-                  //  icon: Icon(Icons.email),
-                  //  hintText: 'Enter Email',
-                  //  hintStyle: TextStyle(color: Colors.grey),
-                   // errorText: userNameError.isEmpty ? null : userNameError)),
+                    //errorText: userNameError.isEmpty ? null : userNameError
+                    )
+                    ),
             TextFormField(
                 style: TextStyle(fontSize: 16),
                 keyboardType: TextInputType.text,
@@ -92,25 +138,27 @@ class _loginScreenState extends State<loginScreen> {
                     icon: Icon(Icons.key),
                     hintText: 'Enter Password',
                     hintStyle: TextStyle(color: Colors.grey),
-                    errorText: userNameError.isEmpty ? null : userNameError)),
+                    //errorText: userNameError.isEmpty ? null : userNameError
+                    )),
                     //--------
                     SizedBox(
                       height: 40,
                     ),
                     ElevatedButton(
                       onPressed: () {
-                        showDialog(
-                          context: context, 
-                          builder: (context){
-                            return AlertDialog(
-                             title:Text('Warning!'),
-                             icon:Icon(Icons.warning),
-                             content:Container(
-                               child: Text('Invalid Credentials'),)
-                            );
+                        handleLoginPress();
+                        //  showDialog(
+                        //    context: context, 
+                        //   builder: (context){
+                        //     return AlertDialog(
+                        //       title:Text('Warning!'),
+                        //       icon:Icon(Icons.warning),
+                        //      content:Container(
+                        //         child: Text('Invalid Credentials'),)
+                        //      );
 
 
-                        },);
+                        //  },);
                         // String username='BU CSE';
                         // String email='nurehafsa399@gmail.com';
                         // Navigator.of(context).push(MaterialPageRoute(
