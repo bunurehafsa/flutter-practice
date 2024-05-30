@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:test_2/Calculator.dart';
+import 'package:test_2/Explore.dart';
 import 'package:test_2/figma.dart';
 //import 'package:test_2/home.dart';
 import 'package:test_2/images.dart';
@@ -32,7 +33,7 @@ class MyApp extends StatelessWidget {
         useMaterial3: true,
       ),
       //home: const loginScreen(),
-      initialRoute: '/login',
+      initialRoute: '/home',
       routes: {
         '/login':(BuildContext context) => const loginScreen() ,
         '/signup':(BuildContext context) => const SignupScreen() ,
@@ -46,6 +47,7 @@ class MyApp extends StatelessWidget {
         '/calculator':(BuildContext context) => const CalculatorScreen2() ,
         '/images':(BuildContext context) => const ImagesAndButton() ,
         '/figma':(BuildContext context) => const FigmaScreen() ,
+        '/explore':(BuildContext context) => const ExploreScreen() ,
 
 
       } ,

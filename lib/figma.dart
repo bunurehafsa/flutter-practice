@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:test_2/Explore.dart';
 
 class FigmaScreen extends StatefulWidget {
   const FigmaScreen({super.key});
@@ -87,7 +88,14 @@ class _FigmaScreenState extends State<FigmaScreen> {
                   ),
                   const SizedBox(height: 20),
                   ElevatedButton(
-                    onPressed: () {},
+                    onPressed: () {
+                       Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) => ExploreScreen()));
+                    },
+                    //  Navigator.of(context).pop(MaterialPageRoute(
+                    //         builder: (context)=> const SignupScreen()));
                     style: ElevatedButton.styleFrom(
                       backgroundColor: Colors.blue,
                       padding: const EdgeInsets.symmetric(horizontal: 150, vertical: 15),
